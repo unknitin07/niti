@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight E-Ticket - Emirates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #c21f39 0%, #e03b54 100%);
+            color: white;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: white;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+        
+        .airline-logo {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .flight-icon {
+            font-size: 40px;
+        }
+        
+        .ticket-type {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .booking-ref {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            text-align: right;
+        }
+        
+        .booking-ref-label {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .booking-ref-code {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .passenger-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #c21f39;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .info-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            color: #222;
+            font-weight: 600;
+        }
+        
+        .flight-details {
+            margin: 40px 0;
+        }
+        
+        .flight-route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .airport {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .airport-code {
+            font-size: 48px;
+            font-weight: 700;
+            color: #c21f39;
+            margin-bottom: 5px;
+        }
+        
+        .airport-name {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .city-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+        
+        .flight-arrow {
+            flex: 0 0 200px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .arrow-line {
+            height: 3px;
+            background: linear-gradient(to right, #c21f39, #e03b54);
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .arrow-line::after {
+            content: '✈';
+            position: absolute;
+            right: -5px;
+            top: -12px;
+            font-size: 24px;
+            color: #c21f39;
+        }
+        
+        .flight-duration {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .flight-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .barcode-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .barcode {
+            width: 100%;
+            max-width: 500px;
+            height: 80px;
+            background: repeating-linear-gradient(
+                to right,
+                #000 0px,
+                #000 2px,
+                #fff 2px,
+                #fff 4px
+            );
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        
+        .barcode-number {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            letter-spacing: 3px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: #000;
+            margin: 0 auto 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-code::before,
+        .qr-code::after {
+            content: '';
+            position: absolute;
+            background: white;
+        }
+        
+        .qr-code::before {
+            width: 15px;
+            height: 15px;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .qr-code::after {
+            width: 15px;
+            height: 15px;
+            bottom: 10px;
+            right: 10px;
+        }
+        
+        .important-info {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .important-info h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .important-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .important-info li {
+            color: #856404;
+            padding: 5px 0;
+            font-size: 13px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .important-info li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 12px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 0 30px 30px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #c21f39 0%, #e03b54 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(194, 31, 57, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #c21f39;
+            border: 2px solid #c21f39;
+        }
+        
+        .btn-secondary:hover {
+            background: #c21f39;
+            color: white;
+        }
+        
+        .seat-info {
+            display: inline-block;
+            background: #c21f39;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .action-buttons {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .flight-route {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .flight-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .airport-code {
+                font-size: 36px;
+            }
+            
+            .booking-ref {
+                position: static;
+                margin-top: 20px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="ticket">
+        <div class="header">
+            <div class="airline-logo">
+                <span class="flight-icon">✈</span>
+                EMIRATES
+            </div>
+            <div class="ticket-type">ELECTRONIC TICKET</div>
+            <div class="booking-ref">
+                <div class="booking-ref-label">BOOKING REFERENCE</div>
+                <div class="booking-ref-code">3EK527</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div style="text-align: right; margin-bottom: 20px;">
+                <span class="status-badge">✓ CONFIRMED</span>
+            </div>
+            
+            <div class="passenger-info">
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Passenger Name</div>
+                        <div class="info-value">NAWKUSH/MR</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 3px;">Adult (ADT)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">E-Ticket Number</div>
+                        <div class="info-value">176-2847391855</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 3px;">Issued: 28 Oct 2025</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Class / Booking Class</div>
+                        <div class="info-value">BUSINESS CLASS (J)</div>
+                        <div class="seat-info">SEAT: 12A</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Frequent Flyer</div>
+                        <div class="info-value">SKYWARDS GOLD</div>
+                        <div style="font-size: 13px; color: #666; margin-top: 3px;">Member: 749283651</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">PNR / Record Locator</div>
+                        <div class="info-value">3EK527</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Ticket Status</div>
+                        <div class="info-value" style="color: #28a745;">OK - CONFIRMED</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flight-details">
+                <div class="flight-route">
+                    <div class="airport">
+                        <div class="airport-code">DEL</div>
+                        <div class="airport-name">Indira Gandhi International</div>
+                        <div class="city-name">New Delhi, India</div>
+                        <div style="margin-top: 15px;">
+                            <div class="info-label">Departure</div>
+                            <div class="info-value">Wednesday, 08 Jan 2026</div>
+                            <div class="info-value" style="font-size: 24px; color: #c21f39;">22:15</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">Terminal 3 | Gate: A24</div>
+                            <div style="font-size: 11px; color: #888; margin-top: 3px;">Check-in Counter: 220-230</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flight-arrow">
+                        <div class="arrow-line"></div>
+                        <div class="flight-duration">
+                            <strong>3h 45m</strong><br>
+                            Direct Flight
+                        </div>
+                    </div>
+                    
+                    <div class="airport">
+                        <div class="airport-code">DXB</div>
+                        <div class="airport-name">Dubai International Airport</div>
+                        <div class="city-name">Dubai, UAE</div>
+                        <div style="margin-top: 15px;">
+                            <div class="info-label">Arrival</div>
+                            <div class="info-value">Thursday, 09 Jan 2026</div>
+                            <div class="info-value" style="font-size: 24px; color: #c21f39;">01:00+1</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">Terminal 3 | Concourse B</div>
+                            <div style="font-size: 11px; color: #888; margin-top: 3px;">Baggage Claim: Belt 5</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flight-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Flight Number</div>
+                        <div class="info-value">EK 512</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Aircraft</div>
+                        <div class="info-value">Boeing 777-300ER</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Reg: A6-ECE</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Operated By</div>
+                        <div class="info-value">Emirates Airline</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Baggage Allowance</div>
+                        <div class="info-value">2 × 32 kg</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Checked Baggage</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Cabin Baggage</div>
+                        <div class="info-value">2 × 7 kg</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Hand Luggage</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Boarding Time</div>
+                        <div class="info-value">21:45</div>
+                        <div style="font-size: 11px; color: #c21f39; margin-top: 2px;">Gate closes: 21:55</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Fare Type</div>
+                        <div class="info-value">FLEX BUSINESS</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Fare Basis</div>
+                        <div class="info-value">JFLEX</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Miles Earned</div>
+                        <div class="info-value">2,890 Miles</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">150% Bonus (Business)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Meal Preference</div>
+                        <div class="info-value">AVML</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Vegetarian Meal</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Total Fare Paid</div>
+                        <div class="info-value">₹ 89,450</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Inc. taxes & fees</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Form of Payment</div>
+                        <div class="info-value">VISA •••• 4729</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="important-info">
+                <h3>⚠ Important Information</h3>
+                <ul>
+                    <li>Please arrive at the airport at least 3 hours before international departure</li>
+                    <li>Valid passport (minimum 6 months validity) and visa (if required) must be presented at check-in</li>
+                    <li>Web check-in opens 48 hours before departure at emirates.com or mobile app</li>
+                    <li>Seat assignment may change due to operational requirements</li>
+                    <li>This is an electronic ticket. No paper ticket required for travel</li>
+                    <li>Boarding pass will be issued at check-in or online</li>
+                    <li>Carry original passport, visa documents, and COVID-19 vaccination certificate (if applicable)</li>
+                    <li>Prohibited items: Lithium batteries in checked baggage, liquids over 100ml in cabin</li>
+                    <li>Reconfirmation required 72 hours prior to departure for certain destinations</li>
+                </ul>
+            </div>
+            
+            <div style="background: #e8f4f8; border-left: 5px solid #0077b6; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="color: #0077b6; font-size: 16px; margin-bottom: 10px;">📋 Additional Services Included</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    <div style="font-size: 13px; color: #0077b6;">✓ Priority Check-in</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ Lounge Access</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ Priority Boarding</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ Extra Baggage 32kg × 2</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ Premium Meals & Beverages</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ In-flight Entertainment</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ WiFi: 500MB Complimentary</div>
+                    <div style="font-size: 13px; color: #0077b6;">✓ Chauffeur Drive (Dubai)</div>
+                </div>
+            </div>
+            
+            <div class="barcode-section">
+                <div class="info-label">Boarding Pass Barcode</div>
+                <div class="barcode"></div>
+                <div class="barcode-number">EK512 DEL DXB 08JAN26 NAWKUSH</div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="info-label">Mobile Boarding Pass QR Code</div>
+                    <div class="qr-code"></div>
+                    <div style="font-size: 12px; color: #666;">Scan at security & boarding gate</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Emirates Airlines</strong> | 24/7 Customer Support: +971 4 214 4444 | India: 1800 123 9898</p>
+            <p style="margin-top: 10px;">PO Box 686, Dubai, United Arab Emirates | www.emirates.com | IATA Code: EK</p>
+            <p style="margin-top: 10px; font-size: 11px;">
+                This electronic ticket is issued subject to Emirates' conditions of carriage available at emirates.com/conditions<br>
+                Please retain this e-ticket receipt for your records and immigration purposes.<br>
+                Ticket Valid for: One Year from Date of Issue | Non-Refundable | Changes Permitted (Fee applies)<br>
+                Document Verification Code: DVR-2024-EK512-NAWKUSH-3EK527 | Issue Office: DEL1A08AA
+            </p>
+            <p style="margin-top: 10px; font-size: 10px; color: #999;">
+                Carbon Offset: This flight's CO2 emissions: ~0.85 tonnes | Emirates is committed to reducing aviation emissions
+            </p>
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <button class="btn btn-primary" onclick="downloadPDF()">
+            📥 Download PDF
+        </button>
+        <button class="btn btn-secondary" onclick="window.print()">
+            🖨 Print Ticket
+        </button>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('ticket');
+            const opt = {
+                margin: 0.5,
+                filename: 'Emirates_E-Ticket_EK512_NAWKUSH.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        }
+        
+        // Add print styles
+        window.onbeforeprint = function() {
+            document.body.style.background = 'white';
+        };
+        
+        window.onafterprint = function() {
+            document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        };
+    </script>
+</body>
+</html>
